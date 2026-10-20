@@ -8,11 +8,16 @@ import type { ContributionNodes, PullRequestNode } from "./github.ts";
 import { detectLanguage } from "./languages.ts";
 
 const OTHER = "Other";
-const DAY_MS = 24 * 60 * 60 * 1000;
-
 const toDateKey = (iso: string | Date, timeZone: string): string =>
   // sv-SE ロケールは YYYY-MM-DD 形式で出力される
   new Intl.DateTimeFormat("sv-SE", { timeZone }).format(new Date(iso));
+
+/** YYYY-MM-DD の翌日（タイムゾーンに依存しないよう UTC として計算） */
+const nextDateKey = (dateKey: string): string => {
+  const date = new Date(`${dateKey}T00:00:00Z`);
+  date.setUTCDate(date.getUTCDate() + 1);
+  return date.toISOString().slice(0, 10);
+};
 
 const toRatios = (totals: Map<string, number>, limit: number): Ratio[] => {
   const sorted = [...totals.entries()].sort((a, b) => b[1] - a[1]);
@@ -42,11 +47,15 @@ export const buildCalendar = (
     }
   }
 
+  // 期間の両端を先に timeZone の日付へ変換してから 1 日ずつ進める
+  // （UTC の 24 時間刻みで回すと、timeZone 側の最終日が範囲から漏れる）
+  const startKey = toDateKey(range.startedAt, timeZone);
+  const endedKey = toDateKey(range.endedAt, timeZone);
+  const todayKey = toDateKey(new Date(), timeZone);
+  const endKey = endedKey < todayKey ? endedKey : todayKey;
+
   const days: CalendarDay[] = [];
-  const end = new Date(range.endedAt).getTime();
-  for (let t = new Date(range.startedAt).getTime(); t <= end; t += DAY_MS) {
-    const date = toDateKey(new Date(t), timeZone);
-    if (days.at(-1)?.date === date) continue;
+  for (let date = startKey; date <= endKey; date = nextDateKey(date)) {
     days.push({ date, count: counts.get(date) ?? 0 });
   }
   return days;
