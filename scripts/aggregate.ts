@@ -153,8 +153,3 @@ export const buildRecentPrs = (prs: PullRequestNode[], limit: number): PullReque
     }))
     .sort((a, b) => b.date.localeCompare(a.date))
     .slice(0, limit);
-
-export const countContributions = (groups: ContributionNodes[], login: string): number =>
-  groups
-    .filter((g) => g.repository.owner.login.toLowerCase() !== login.toLowerCase())
-    .reduce((acc, g) => acc + g.contributions.nodes.length, 0);

@@ -9,6 +9,16 @@ const STATE_LABEL: Record<PullRequestState, string> = {
   CLOSED: "Closed",
 };
 
+// DBeaver の PR タイトルは "owner/repo#123 本文" の形式で Issue を参照している
+const ISSUE_REF_TITLE = /^([\w.-]+\/[\w.-]+)#(\d+)\s+(.+)$/;
+
+const parseTitle = (pr: PullRequestItem) => {
+  const match = ISSUE_REF_TITLE.exec(pr.title);
+  if (!match) return { title: pr.title, issue: null };
+  const [, repo, number, title] = match;
+  return { title, issue: { number, url: `${new URL(pr.url).origin}/${repo}/issues/${number}` } };
+};
+
 export const RecentPullRequests = ({ prs }: Props) => (
   <section id="prs" className="stack" aria-labelledby="prs-title">
     <h2 id="prs-title" className="section__title">
@@ -18,23 +28,32 @@ export const RecentPullRequests = ({ prs }: Props) => (
       <p className="muted">まだ PR はありません。</p>
     ) : (
       <ul className="card prs">
-        {prs.map((pr) => (
-          <li className="pr" key={pr.url}>
-            <span className={`badge badge--${pr.state.toLowerCase()}`}>{STATE_LABEL[pr.state]}</span>
-            <div className="pr__body">
-              <a className="pr__title" href={pr.url}>
-                {pr.title}
-              </a>
+        {prs.map((pr) => {
+          const { title, issue } = parseTitle(pr);
+          return (
+            <li className="pr" key={pr.url}>
+              <span className={`badge badge--${pr.state.toLowerCase()}`}>{STATE_LABEL[pr.state]}</span>
+              <div className="pr__body">
+                <a className="pr__title" href={pr.url}>
+                  {title}
+                </a>
+                <span className="mono muted xsmall">
+                  {pr.repo} #{pr.number}
+                  {issue && (
+                    <>
+                      {" · "}
+                      <a href={issue.url}>Issue #{issue.number}</a>
+                    </>
+                  )}
+                </span>
+              </div>
               <span className="mono muted xsmall">
-                {pr.repo} #{pr.number}
+                +{pr.additions} −{pr.deletions}
               </span>
-            </div>
-            <span className="mono muted xsmall">
-              +{pr.additions} −{pr.deletions}
-            </span>
-            <span className="pr__date muted xsmall">{formatDate(pr.date)}</span>
-          </li>
-        ))}
+              <span className="pr__date muted xsmall">{formatDate(pr.date)}</span>
+            </li>
+          );
+        })}
       </ul>
     )}
   </section>

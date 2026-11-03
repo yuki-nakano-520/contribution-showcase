@@ -7,7 +7,6 @@ import {
   buildLanguages,
   buildRecentPrs,
   buildRepos,
-  countContributions,
 } from "./aggregate.ts";
 import { loadConfig } from "./config.ts";
 import { fetchProfile, searchPullRequests } from "./github.ts";
@@ -44,9 +43,7 @@ const main = async () => {
     generatedAt: new Date().toISOString(),
     kpi: {
       mergedPrs: merged.total,
-      reviewsAndIssues:
-        countContributions(collection.issueContributionsByRepository, config.login) +
-        countContributions(collection.pullRequestReviewContributionsByRepository, config.login),
+      openPrs: open.total,
     },
     calendar,
     repos: repos.top,

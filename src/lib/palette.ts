@@ -1,6 +1,3 @@
-/** カレンダーの濃淡（0: 活動なし 〜 4: 多い） */
-export const CALENDAR_LEVELS = ["#e8ece9", "#b7e1c3", "#6cc08b", "#2f9e5a", "#1a7f37"] as const;
-
 const LANGUAGE_COLORS: Record<string, string> = {
   TypeScript: "#1a5fb4",
   JavaScript: "#b08800",

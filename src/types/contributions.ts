@@ -1,6 +1,6 @@
 export type Kpi = {
   mergedPrs: number;
-  reviewsAndIssues: number;
+  openPrs: number;
 };
 
 export type CalendarDay = {

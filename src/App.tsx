@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
-import { ContributionCalendar } from "./components/ContributionCalendar.tsx";
+import { ActivityTrend } from "./components/ActivityTrend.tsx";
+import { FeaturedContributions } from "./components/FeaturedContributions.tsx";
 import { KindBreakdown } from "./components/KindBreakdown.tsx";
 import { KpiGrid } from "./components/KpiGrid.tsx";
 import { LanguageBars } from "./components/LanguageBars.tsx";
+import { Principles } from "./components/Principles.tsx";
 import { ProfileHeader } from "./components/ProfileHeader.tsx";
 import { RecentPullRequests } from "./components/RecentPullRequests.tsx";
 import { RepoGrid } from "./components/RepoGrid.tsx";
@@ -10,6 +12,8 @@ import { formatDateTime } from "./lib/format.ts";
 import type { ContributionData } from "./types/contributions.ts";
 
 const DATA_URL = `${import.meta.env.BASE_URL}data/contributions.json`;
+// 件数が少ないうちは割合に意味がないので内訳を出さない
+const MIN_PRS_FOR_KINDS = 10;
 
 type LoadState =
   | { status: "loading" }
@@ -49,11 +53,13 @@ const App = () => {
     <main className="page">
       <ProfileHeader user={data.user} />
       <KpiGrid kpi={data.kpi} />
-      <ContributionCalendar calendar={data.calendar} />
-      <RepoGrid repos={data.repos} />
-      <LanguageBars languages={data.languages} />
-      <KindBreakdown kinds={data.kinds} />
+      <FeaturedContributions />
+      <Principles />
       <RecentPullRequests prs={data.recentPrs} />
+      <RepoGrid repos={data.repos} />
+      <ActivityTrend calendar={data.calendar} />
+      <LanguageBars languages={data.languages} />
+      {data.kpi.mergedPrs >= MIN_PRS_FOR_KINDS && <KindBreakdown kinds={data.kinds} />}
       <footer className="footer muted xsmall">
         <span>データ: GitHub GraphQL API ／ GitHub Actions で毎日自動更新</span>
         <span>最終更新: {formatDateTime(data.generatedAt)}</span>
