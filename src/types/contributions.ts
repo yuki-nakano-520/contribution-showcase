@@ -1,8 +1,6 @@
 export type Kpi = {
   mergedPrs: number;
-  contributedRepos: number;
   reviewsAndIssues: number;
-  longestStreak: number;
 };
 
 export type CalendarDay = {

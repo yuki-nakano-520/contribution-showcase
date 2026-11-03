@@ -6,9 +6,7 @@ type Props = { kpi: Kpi };
 export const KpiGrid = ({ kpi }: Props) => {
   const items = [
     { label: "マージ済み PR", value: kpi.mergedPrs, sub: "他者リポジトリへの PR" },
-    { label: "貢献リポジトリ", value: kpi.contributedRepos, sub: "1 件以上マージされたもの" },
     { label: "レビュー / Issue", value: kpi.reviewsAndIssues, sub: "過去 1 年" },
-    { label: "最長連続日数", value: kpi.longestStreak, sub: "過去 1 年の OSS 活動" },
   ];
 
   return (

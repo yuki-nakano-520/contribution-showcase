@@ -8,7 +8,6 @@ import {
   buildRecentPrs,
   buildRepos,
   countContributions,
-  longestStreak,
 } from "./aggregate.ts";
 import { loadConfig } from "./config.ts";
 import { fetchProfile, searchPullRequests } from "./github.ts";
@@ -45,11 +44,9 @@ const main = async () => {
     generatedAt: new Date().toISOString(),
     kpi: {
       mergedPrs: merged.total,
-      contributedRepos: repos.total,
       reviewsAndIssues:
         countContributions(collection.issueContributionsByRepository, config.login) +
         countContributions(collection.pullRequestReviewContributionsByRepository, config.login),
-      longestStreak: longestStreak(calendar),
     },
     calendar,
     repos: repos.top,
@@ -61,7 +58,7 @@ const main = async () => {
   await mkdir(dirname(config.outputPath), { recursive: true });
   await writeFile(config.outputPath, `${JSON.stringify(data, null, 2)}\n`, "utf8");
   console.log(
-    `✔ ${config.outputPath} を生成しました（マージ済み PR ${data.kpi.mergedPrs} 件 / リポジトリ ${data.kpi.contributedRepos} 件）`,
+    `✔ ${config.outputPath} を生成しました（マージ済み PR ${data.kpi.mergedPrs} 件 / リポジトリ ${repos.total} 件）`,
   );
 };
 

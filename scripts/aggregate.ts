@@ -61,16 +61,6 @@ export const buildCalendar = (
   return days;
 };
 
-export const longestStreak = (calendar: CalendarDay[]): number => {
-  let best = 0;
-  let current = 0;
-  for (const day of calendar) {
-    current = day.count > 0 ? current + 1 : 0;
-    best = Math.max(best, current);
-  }
-  return best;
-};
-
 export const buildRepos = (merged: PullRequestNode[], limit: number): { total: number; top: RepoSummary[] } => {
   const repos = new Map<string, RepoSummary>();
   for (const pr of merged) {
