@@ -21,3 +21,12 @@ npm run dev
 |---|---|---|
 | `SHOWCASE_TOKEN` | Secret（任意） | 自動発行トークンで取得できない場合に PAT を指定 |
 | `SHOWCASE_USER` | Variable（任意） | 集計対象のユーザー（既定はリポジトリ所有者） |
+
+### 定期実行が止まったとき
+
+公開リポジトリでは、60 日間活動がないと定期実行が自動で無効になります。Dependabot が毎月作る更新 PR をマージしていれば活動が続きます。
+無効になった場合は、次のコマンドで再開できます。
+
+```bash
+gh workflow enable deploy.yml
+```
