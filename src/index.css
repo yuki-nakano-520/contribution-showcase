@@ -107,9 +107,6 @@ ul {
 .profile__text { display: flex; flex-direction: column; gap: 2px; }
 .profile__name { margin: 0; font-size: 32px; font-weight: 700; letter-spacing: -0.01em; }
 .profile__links { display: flex; flex-wrap: wrap; gap: 12px; }
-.profile__lead { flex-basis: 100%; display: flex; flex-direction: column; gap: 4px; }
-.profile__lead p { margin: 0; }
-.profile__lead-title { font-size: 24px; font-weight: 700; line-height: 1.4; }
 
 .button {
   display: inline-flex;

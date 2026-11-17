@@ -6,11 +6,6 @@ export type FeaturedContribution = {
   solution: string;
 };
 
-export const LEAD = {
-  title: "仕事の外で、OSS に PR を送っています。",
-  description: "VS Code と DBeaver で修正がマージされています。PR の説明とレビューのやり取りは英語です。",
-};
-
 export const FEATURED_CONTRIBUTIONS: FeaturedContribution[] = [
   {
     project: "DBeaver",
