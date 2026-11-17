@@ -4,7 +4,6 @@ import { FeaturedContributions } from "./components/FeaturedContributions.tsx";
 import { KindBreakdown } from "./components/KindBreakdown.tsx";
 import { KpiGrid } from "./components/KpiGrid.tsx";
 import { LanguageBars } from "./components/LanguageBars.tsx";
-import { Principles } from "./components/Principles.tsx";
 import { ProfileHeader } from "./components/ProfileHeader.tsx";
 import { RecentPullRequests } from "./components/RecentPullRequests.tsx";
 import { RepoGrid } from "./components/RepoGrid.tsx";
@@ -54,7 +53,6 @@ const App = () => {
       <ProfileHeader user={data.user} />
       <KpiGrid kpi={data.kpi} />
       <FeaturedContributions />
-      <Principles />
       <RecentPullRequests prs={data.recentPrs} />
       <RepoGrid repos={data.repos} />
       <ActivityTrend calendar={data.calendar} />

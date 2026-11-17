@@ -8,7 +8,7 @@ export const KpiGrid = ({ kpi }: Props) => {
   const items = [
     { label: "マージ済み PR", value: formatInteger(kpi.mergedPrs), sub: "他者リポジトリへの PR", text: false },
     { label: "レビュー中の PR", value: formatInteger(kpi.openPrs), sub: "マージ待ちの PR", text: false },
-    { label: "主な貢献先", value: MAIN_PROJECTS.join(" / "), sub: "広く使われている開発ツール", text: true },
+    { label: "主な貢献先", value: MAIN_PROJECTS.join(" / "), sub: "マージされた PR の提出先", text: true },
   ];
 
   return (
